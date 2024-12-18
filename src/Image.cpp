@@ -129,7 +129,6 @@ std::ostream& operator<<(std::ostream& os, const Image& image)
 		for (int x = 0; x < image.getWidth(); x++)
 		{
 			os << image(y, x);
-			
 		}
 		os << std::endl;
 	}
