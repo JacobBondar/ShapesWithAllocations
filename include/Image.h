@@ -7,10 +7,10 @@ class Image
 {
 public:
 	Image();
-	Image(int width, int height);
-	Image(int width, int height, Pixel pixel);
-	Pixel& operator()(unsigned int x, unsigned int y);
-	Pixel operator()(unsigned int x, unsigned int y) const;
+	Image(int height, int width);
+	Image(int height, int width, Pixel pixel);
+	Pixel& operator()(unsigned int y, unsigned int x);
+	Pixel operator()(unsigned int y, unsigned int x) const;
 	Image& operator=(const Image& image2);
 
 	unsigned int getHeight() const;
@@ -18,8 +18,8 @@ public:
 
 private:
 	ImageDataStructure m_data;
-	void insertIntoMembers(int width, int height, const Pixel& p);
-	Pixel& getPixelForOperator(unsigned int x, unsigned int y) const;
+	void insertIntoMembers(int height, int width, const Pixel& p);
+	Pixel& getPixelForOperator(unsigned int y, unsigned int x) const;
 };
 
 bool operator==(const Image& image1, const Image& image2);

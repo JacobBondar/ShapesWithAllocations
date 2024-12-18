@@ -14,7 +14,7 @@ public:
 	void setHeight(int height);
 	void setWidth(int width);
 	void setFirstPtr(const Pixel& p);
-	Pixel& getPixel(unsigned int x, unsigned int y) const;
+	Pixel& getPixel(unsigned int y, unsigned int x) const;
 	void setNewPtr(unsigned int oldHeight);
 
 private:

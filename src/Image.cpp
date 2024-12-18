@@ -9,31 +9,31 @@ Image::Image()
 
 //-----------------------------------------------------------------------------
 
-Image::Image(int width, int height)
+Image::Image(int height, int width)
 {
 	Pixel p(' ');
-	insertIntoMembers(width, height, p);
+	insertIntoMembers(height, width, p);
 }
 
 //-----------------------------------------------------------------------------
 
-Image::Image(int width, int height, Pixel pixel)
+Image::Image(int height, int width, Pixel pixel)
 {
-	insertIntoMembers(width, height, pixel);
+	insertIntoMembers(height, width, pixel);
 }
 
 //-----------------------------------------------------------------------------
 
-Pixel& Image::operator()(unsigned int x, unsigned int y)
+Pixel& Image::operator()(unsigned int y, unsigned int x)
 {
-	return getPixelForOperator(x, y);
+	return getPixelForOperator(y, x);
 }
 
 //-----------------------------------------------------------------------------
 
-Pixel Image::operator()(unsigned int x, unsigned int y) const
+Pixel Image::operator()(unsigned int y, unsigned int x) const
 {
-	return getPixelForOperator(x, y);
+	return getPixelForOperator(y, x);
 }
 
 //-----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ Image& Image::operator=(const Image& image)
 		{
 			for (int col = 0; col < m_data.getWidth(); col++)
 			{
-				(*this)(col, row) = image(col, row);
+				(*this)(row, col) = image(row, col);
 			}
 		}
 	}
@@ -91,21 +91,21 @@ Image operator+(const Image& image1, const Image& image2)
 
 	bigHeight = getBigger(image1.getHeight(), image2.getHeight());
 	bigWidth = image1.getWidth() + image2.getWidth();
-	Image bigImage(bigWidth, bigHeight);
+	Image bigImage(bigHeight, bigWidth);
 
 	for (unsigned int y = 0; y < bigHeight; y++)
 	{
 		unsigned int x = 0;
 		while (x < image1.getWidth() && y < image1.getHeight())
 		{
-			bigImage(x, y) = image1(x, y);
+			bigImage(y, x) = image1(y, x);
 			x++;
 		}
 
 		unsigned int ogX = x = image1.getWidth();
 		while (x < image2.getWidth() + ogX && y < image2.getHeight())
 		{
-			bigImage(x, y) = image2(x - ogX, y);
+			bigImage(y, x) = image2(y, x - ogX);
 			x++;
 		}
 	}
@@ -128,7 +128,7 @@ std::ostream& operator<<(std::ostream& os, const Image& image)
 	{
 		for (int x = 0; x < image.getWidth(); x++)
 		{
-			os << image(x, y);
+			os << image(y, x);
 			
 		}
 		os << std::endl;
@@ -152,17 +152,17 @@ Image operator|(const Image& image1, const Image& image2)
 			if (row < image1.getHeight() && row < image2.getHeight() &&
 				col < image1.getWidth() && col < image2.getWidth())
 			{
-				bigImage(col, row) = image1(col, row) | image2(col, row);
+				bigImage(row, col) = image1(row, col) | image2(row, col);
 			}
 
 			else if (row < image1.getHeight() && col < image1.getWidth())
 			{
-				bigImage(col, row) = image1(col, row);
+				bigImage(row, col) = image1(row, col);
 			}
 
 			else if (row < image2.getHeight() && col < image2.getWidth())
 			{
-				bigImage(col, row) = image2(col, row);
+				bigImage(row, col) = image2(row, col);
 			} 
 		}
 	}
@@ -183,18 +183,19 @@ Image operator&(const Image& image1, const Image& image2)
 {
 	unsigned int smallHeight = 0, smallWidth = 0;
 
-	smallHeight = image1.getHeight() < image2.getHeight() ? image1.getHeight() :
-		image2.getHeight();
+	smallHeight = image1.getHeight() < image2.getHeight() ? 
+				  image1.getHeight() : image2.getHeight();
 
-	smallWidth = image1.getWidth() < image2.getWidth() ? image1.getWidth() :
-		image2.getWidth();
-	Image smallImage(smallWidth, smallHeight);
+	smallWidth = image1.getWidth() < image2.getWidth() ? 
+				 image1.getWidth() : image2.getWidth();
+
+	Image smallImage(smallHeight, smallWidth);
 
 	for (int row = 0; row < smallHeight; row++)
 	{
 		for (int col = 0; col < smallWidth; col++)
 		{
-			smallImage(col, row) = image1(col, row) & image2(col, row);
+			smallImage(row, col) = image1(row, col) & image2(row, col);
 		}
 	}
 	return smallImage;
@@ -238,7 +239,7 @@ Image& operator*=(Image& image, unsigned int value)
 
 //-----------------------------------------------------------------------------
 
-Image& operator*=(unsigned int value, Image& image) // Do I need this function???
+Image& operator*=(unsigned int value, Image& image)
 {
 	image *= value;
 	return image;
@@ -248,20 +249,21 @@ Image& operator*=(unsigned int value, Image& image) // Do I need this function??
 
 Image operator~(const Image& image)
 {
-	Image newImage = image;
+	Image newImage;
+	newImage = image;
 
 	for (int row = 0; row < image.getHeight(); row++)
 	{
 		for (int col = 0; col < image.getWidth(); col++)
 		{
-			if (newImage(col, row).getColor() == WHITE_COLOR)
+			if (newImage(row, col).getColor() == WHITE_COLOR)
 			{
-				newImage(col, row) = BLACK_COLOR;
+				newImage(row, col) = BLACK_COLOR;
 			}
 
-			else if (newImage(col, row).getColor() == BLACK_COLOR)
+			else if (newImage(row, col).getColor() == BLACK_COLOR)
 			{
-				newImage(col, row) = WHITE_COLOR;
+				newImage(row, col) = WHITE_COLOR;
 			}
 		}
 	}
@@ -284,7 +286,7 @@ unsigned int Image::getWidth() const
 
 //-----------------------------------------------------------------------------
 
-void Image::insertIntoMembers(int width, int height, const Pixel& p)
+void Image::insertIntoMembers(int height, int width ,const Pixel& p)
 {
 	m_data.setHeight(height);
 	m_data.setWidth(width);
@@ -293,7 +295,7 @@ void Image::insertIntoMembers(int width, int height, const Pixel& p)
 
 //-----------------------------------------------------------------------------
 
-Pixel& Image::getPixelForOperator(unsigned int x, unsigned int y) const
+Pixel& Image::getPixelForOperator(unsigned int y, unsigned int x) const
 {
 	if (x >= m_data.getWidth() || y >= m_data.getHeight())
 	{
@@ -301,7 +303,7 @@ Pixel& Image::getPixelForOperator(unsigned int x, unsigned int y) const
 			"default set now to the first index in the array\n";
 		return m_data.getPixel(0, 0);
 	}
-	return m_data.getPixel(x, y);
+	return m_data.getPixel(y, x);
 }
 
 //-----------------------------------------------------------------------------

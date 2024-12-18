@@ -83,7 +83,7 @@ void ImageDataStructure::setNewPtr(unsigned int oldHeight)
 
 //-----------------------------------------------------------------------------
 
-Pixel& ImageDataStructure::getPixel(unsigned int x, unsigned int y) const
+Pixel& ImageDataStructure::getPixel(unsigned int y, unsigned int x) const // Change
 {
 	return m_ptr[y][x];
 }
