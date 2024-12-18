@@ -3,6 +3,8 @@
 #include "ImageDataStructure.h"
 #include "Pixel.h"
 
+//-----------------------------------------------------------------------------
+
 class Image
 {
 public:
@@ -21,6 +23,8 @@ private:
 	void insertIntoMembers(int height, int width, const Pixel& p);
 	Pixel& getPixelForOperator(unsigned int y, unsigned int x) const;
 };
+
+//-----------------------------------------------------------------------------
 
 bool operator==(const Image& image1, const Image& image2);
 bool operator!=(const Image& image1, const Image& image2);
