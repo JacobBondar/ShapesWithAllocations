@@ -18,7 +18,7 @@ int main()
 	if ((p1 & p2) == p1) std::cout << "yay!\n";
 	std::cout << "(p1 & p2) == p1" << std::endl;
 	std::cout << (p1 & p2) << std::endl << p1 << std::endl;
-	std::cout << ~(p1 & p2) << std::endl;
+	std::cout << p1 << std::endl;
 
 	if ((p1 | p2) == p2) std::cout << "yay!\n";
 	std::cout << "(p1 | p2) == p2" << std::endl;

@@ -12,7 +12,7 @@ Pixel::Pixel(unsigned char pixel)
 
 	else
 	{
-		m_color = ' ';
+		m_color = WHITE_COLOR;
 	}
 }
 

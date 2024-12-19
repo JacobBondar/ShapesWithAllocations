@@ -26,6 +26,6 @@ private:
 	int m_height;
 	int m_width;
 
-	void checkAllocation(const void const* m_ptr);
+	void checkAllocation(const void const* ptr);
 	void deletePtr(unsigned int oldWidth);
 };
